@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}
+Edit Product Details
+{% endblock %}
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+{% block content %}
+<div class="container">
+        <form method="post">
+            {% csrf_token %}
+            <div class="col-md-8 col-md-offset-2">
+                <div class="panel panel-default">
+                    <div class="panel-heading"> Edit Product Details</div>
+                    <div class="panel-body">
+            		{{form.as_p}}
+            		<div class="col-md-6 col-md-offset-4">
+                            <input type="submit" value="Save" class="btn btn-success">
+                        </div>
+                  
+            		</div>
+            	</div>
+        	</div>
+    	</form>
+</div>
+
+<div class="container">
+	<div class = "col-md-8 col-md-offset-2">
+        <div class = "panel panel-default">
+        	<div class = "panel panel-body">
+		        <div class = "col-md-6 col-md-offset-4">
+		            <a href = "{% url 'shop:product_list' %}"><button class="btn btn-outline-primary">Back</button></a>
+		        </div> 
+    		</div>
+		</div>
+	</div>
+</div>
+{% endblock content %}
+
+</html>

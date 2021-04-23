@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}
+Login
+{% endblock %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+{% block content %}
+<div class = 'container'>
+  <p> You have successfully logged out! Thank you for using our website. We hope you had a wonderful experience! Click <a href="{% url 'users:login' %}">here</a> to login. </p>
+</div>
+
+{% endblock %}
+</html>

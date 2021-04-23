@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+{% load mytags %}
+{% load crispy_forms_tags %}
+{% block title %}
+Select Address
+{% endblock %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+
+{% block content %}
+ <div class="container">
+    <div class = "col-md-6">
+        <p> Hello {{ request.user.full_name }}! Select an address from the below options that can be used for delivery {% if request.user|group:"merchant" %} and product creation{% endif %}.</p>
+        <p> In case the address you want to create is not mentioned below, you can create a new one <a href = "{% url 'users:create-address' %}">here</a>.</p>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="col-md-8 col-md-offset-2">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <label for="location">Choose an Address:</label>
+                        <select name="locations">
+                        {% for address in addresses %}
+                        <option value="{{address}}" name = "location">Location-{{address.tag}} : {{address}}</option>
+                        {% endfor %}
+                        </select>
+                        <br><br><br>
+                        <div class="col-md-6 col-md-offset-4">
+                            <input type="submit" value="Update current location" class="btn btn-success">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock content %}
+
+</html>

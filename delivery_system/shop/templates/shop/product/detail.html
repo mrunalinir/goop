@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}
+{{ product.name }}
+{% endblock %}
+{% block content %}
+    <div class="bg-light py-3">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 mb-0"><a href="{% url 'shop:product_list' %}">Home</a> <span class="mx-2 mb-0">/</span> <strong class="text-black">{{ product.name }}</strong></div>
+        </div>
+      </div>
+    </div>  
+
+    <div class="container">
+    <p><strong class='text-black'> Hello {{ request.user.full_name }}!</strong> 
+    {% if request.user.location %}Your current location is set to {{ request.user.location }}. If you would like to change that, click <a href="{% url 'users:set-address' %}">here</a>.
+    {% else %}<span style="color:red">You currently do not have a location set. This would lead to issues while ordering a product. </span>You can set your location by selecting from your addresses <a href="{% url 'users:set-address' %}">here</a>.
+    {% endif %}</p>
+       
+    </div>
+
+    <div class="site-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <img src="{{ product.image.url }}" alt="Image" class="img-fluid">
+          </div>
+
+          <div class="col-md-6">
+            <h2 class="text-black mr-2">{{ product.name }}</h2>
+            <p><strong class="text-primary h4">₹{{ product.price }}</strong></p>
+            <p>{{ product.description|linebreaks }}</p>
+            <p>Sold by {{product.seller }} at {{ product.location }}</p>
+            <p>Category: {% for cat in product.category.all %} <strong>{{ cat }}</strong> {% endfor %}</p>
+            <p>Available Units: {{ product.stock_units }}</p>
+            <div class="mt-5 col-md-5">
+              <a href = "{% url 'order:add-to-cart' product_id=product.id %}"><button class="buy-now btn btn-sm btn-primary">Add to cart</button></a>
+            </div>
+
+          </div>
+
+          {% if request.user == product.seller  %}
+          <div class="col-md-6">
+            <span class = "mx-2 mb-0"><strong class = "text-black">Product Owner Actions</strong></span> 
+            <p><button class="buy-now btn btn-sm btn-primary" href = "{% url 'shop:update-product' product_id=product.id %}">Update Product </button></p>
+            <p><button class="buy-now btn btn-sm btn-primary" href = "{% url 'shop:delete-product' product_id=product.id %}">Update Product </button></p>
+          </div>
+          {% endif %}
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+
+    
+    
+
+    
+{% endblock %}

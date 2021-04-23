@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}
+Update Item
+{% endblock %}
+{% block content %}
+    <div class="bg-light py-3">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 mb-0"><a href="{% url 'shop:product_list' %}">Home</a> <span class="mx-2 mb-0">/</span> <strong class="text-black">Update Item</strong></div>
+        </div>
+      </div>
+    </div>  
+
+    <div class="container">
+    <p><strong class='text-black'> Hello {{ request.user.full_name }}!</strong> 
+    {% if request.user.location %}Your current location is set to {{ request.user.location }}. If you would like to change that, click <a href="{% url 'users:set-address' %}">here</a>.
+    {% else %}<span style="color:red">You currently do not have a location set. This would lead to issues while ordering a product. </span>You can set your location by selecting from your addresses <a href="{% url 'users:set-address' %}">here</a>.
+    {% endif %}</p>
+       
+    </div>
+
+    <div class="site-section">
+      <div class="container">
+        <div class="row">
+          <p> Details for Order Item: {{item.item.name}} </p>
+                <p> Status: {{ item.status }}</p>
+                <p> Mode: {{ item.mode }}</p>
+                <p> Date: {{ item.created }}</p>
+                <p> Delivery Address: {{ item.address }} </p>
+                <p> Cost: ₹{{ item.total_cost }}
+                {% with product=item.item %}
+                <div class="site-section">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <img src="{{ product.image.url }}" alt="Image" class="img-fluid">
+                      </div>
+
+                      <div class="col-md-6">
+                        <h2 class="text-black mr-2">{{ product.name }}</h2>
+                        <p><strong class="text-primary h4">₹{{ product.price }}</strong></p>
+                        <p>{{ product.description|linebreaks }}</p>
+                        <p>Sold by {{product.seller }} at {{ product.location }}</p>
+                        <p>Category: {% for cat in product.category.all %} <strong>{{ cat }}</strong> {% endfor %}</p>
+                        <p>Quantity: {{ item.quantity }}
+
+                      </div>
+                      <form method="post">
+                        {% csrf_token %}
+                        <p>Enter the status of the product</p>
+                            <select name="status">
+                                <option value="in_transit" name = "status">In Transit - The Order has been accepted and will be delivered soon</option>
+                                <option value="delivered" name = "status">Delivered - The Order has been delivered</option>
+                                <option value="cancelled" name = "status">Cancelled - The Order has been cancelled</option>
+                            </select>                        
+                        <p>Enter any message you would like conveyed to the user</p>
+                            <input type="text" name="comments">
+                        <p>Enter the preferred date for delivery if any</p>
+                            <input value="deliver_by" type="datetime-local">
+                         <input type="submit" value="Update Order" class="btn btn-success">
+                      </form>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% end with %}
+               
+            <a href="{% url 'shop:product_list' %}"
+                                        class="btn btn-primary btn-sm">Home</a>
+        </div>
+      </div>
+    </div>
+
+    
+
+    
+    
+
+    
+{% endblock %}

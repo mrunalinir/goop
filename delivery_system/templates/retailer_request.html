@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}
+Register
+{% endblock %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+{% block content %}
+<div class="container">
+  <div class = "col-md-8 col-md-offset-2">
+        <div class = "panel panel-default">
+          <div class = "panel panel-body">
+            <div class = "col-md-6 col-md-offset-4">
+                <p> User details: <br>
+                  Name: {{ user.full_name }} <br>
+                  Email: {{ user.email }} <br>
+                  Phone Number: {{user.phone }} <br>
+                </p>
+
+                <p>
+                  Addresses <br>
+                  {% for a in addresses %}
+                  Tag: {{ a.tag }} <br>
+                  {{ a }} <br>
+                  {% endfor %}
+                </p>
+            </div> 
+        </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+        <form method="post">
+            {% csrf_token %}
+            <div class="col-md-8 col-md-offset-2">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Make User Retailer</div>
+                    <div class="panel-body">
+                {{ form.as_p }}
+
+                <div class="col-md-6 col-md-offset-4">
+                            <input type="submit" value="SUBMIT" class="btn btn-success">
+                        </div>
+                    </div>
+                </br>
+                    
+                </div>
+              </div>
+          </div>
+      </form>
+</div>
+
+<div class="container">
+  <div class = "col-md-8 col-md-offset-2">
+        <div class = "panel panel-default">
+          <div class = "panel panel-body">
+            <div class = "col-md-6 col-md-offset-4">
+                <a href = "{% url 'users:retailer-requests' %}"><button class="btn btn-outline-primary">Retailer Requests</button></a>
+            </div> 
+        </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+</html>

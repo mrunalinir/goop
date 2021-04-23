@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}
+Seller Orders
+{% endblock %}
+{% block content %}
+
+
+<div class="bg-light py-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 mb-0"><a href="{% url 'shop:product_list' %}">Home</a> <span class="mx-2 mb-0">/</span> <strong
+                    class="text-black">Seller Orders</strong></div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+<p> Hello {{ request.user.full_name }}! 
+{% if request.user.location %} Your current location is set to {{ request.user.location }}. If you would like to change that, click <a href="{% url 'users:set-address' %}">here</a>.
+{% else %} You currently do not have a location set. This would lead to issues while ordering a product. You can set your location by selecting from your addresses <a href="{% url 'users:set-address' %}">here</a>.
+{% endif %}</p>
+</div>
+<div class="site-section">
+    <div class="container">
+        <div class="row mb-5">
+                <div class="site-blocks-table">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="product-thumbnail">Image</th>
+                                <th class="product-name">Product</th>
+                                <th class="product-price">Price</th>
+                                <th class="product-quantity">Quantity</th>
+                                <th class="product-total">Total</th>
+                                <th class='product-name'>Status</th>
+                                <th class='product-name'>Expected Delivery</th>
+                                <th class="product-remove">Update Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>{% for prod in items %}
+                                {% with p=prod.item %}
+                                <td class="product-thumbnail">
+                                    <img src="{{ p.image.url }}" alt="Image" class="img-fluid">
+                                </td>
+                                <td class="product-name">
+                                    <h2 class="h5 text-black"><a href = "{% url 'shop:product_detail' product_id=p.id %}">{{ p.name }}</a></h2>
+                                </td>
+                                <td>₹{{ p.price }}</td>
+                                <td>
+                                    {{ prod.quantity }}
+                                </td>
+                                <td>₹{{ prod.total_cost }}</td>
+                                <td>{{ prod.status }}</td>
+                                <td>{{ prod.deliver_by }}</td>
+                                <td><a href="{% url 'order:update-status' orderitem_id=prod.id %}"
+                                        class="btn btn-primary btn-sm">Update Status</a></td>
+                            </tr>
+                            {% endwith %}
+                            {% endfor %}
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                {% endfor %}
+        </div>
+        <a href="{% url 'shop:product_list' %}"
+                                        class="btn btn-primary btn-sm">Home</a>
+    </div>
+</div>
+{% endblock %}

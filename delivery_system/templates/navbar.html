@@ -1,0 +1,67 @@
+{% load static %}
+{% load mytags %}
+    <header class="site-navbar" role="banner">
+        <div class="site-navbar-top">
+            <div class="container">
+                <div class="row align-items-center">
+
+
+                    <div class="col-12 mb-3 mb-md-0 col-md-4 order-1 order-md-2 text-center">
+                        <div class="site-logo">
+                            <a href="{% url 'shop:product_list' %}" class="js-logo-clone">Django-Ecommerce</a>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4 order-3 order-md-3 text-right">
+                        <div class="site-top-icons">
+                            <ul>
+                                <li>
+                                    {% if request.user.is_authenticated %}
+                                    <a href="{% url 'users:profile' %}">
+                                    {% else %}
+                                    <a href="{% url 'users:login' %}">
+                                   {% endif %}
+                                   <span class="icon icon-person"></span></a>
+                               </li>
+                                   
+                                <li>
+                                    <a href="{% url 'order:cart' %}" class="site-cart">
+                                        <span class="icon icon-shopping_cart"></span>
+                                        <span class='badge red z-depth-1 mr-1'>{{ request.user|cart_item_count }}</span>
+                                    </a>
+                                </li>
+                                
+                                {% if request.user.is_authenticated %}
+                                <li>
+                                    <a href = "{% url 'users:logout' %}">
+                                    <span class="glyphicon glyphicon-log-out">Log out</span> 
+                                    </a>
+                                </li>
+                                {% else %}
+                                <li>
+                                    <a href = "{% url 'users:login' %}">
+                                    <span class="glyphicon glyphicon-log-out">Login</span> 
+                                    </a>
+                                </li>
+                                {% endif %}
+                                <li class="d-inline-block d-md-none ml-md-0"><a href="#"
+                                        class="site-menu-toggle js-menu-toggle"><span class="icon-menu"></span></a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <nav class="site-navigation text-right text-md-center" role="navigation">
+            <div class="container">
+                <ul class="site-menu js-clone-nav d-none d-md-block">
+                    <li><a href="{% url 'shop:product_list' %}">Home</a></li>
+                    <li><a href="{% url "shop:product_list" %}">Shop</a></li>
+                    {% if request.user|group:"merchant" %}
+                    <li><a href="{% url 'shop:wholesale_product_list' %}">Wholesale</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+    </header>
