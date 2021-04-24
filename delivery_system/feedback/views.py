@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from .models import ProductFeedback
 from .models import OrderFeedback
 from shop.models import Product
+from order.models import OrderItem
 from .forms import ProdFeedbackCreateForm
 from .forms import OrderFeedbackCreateForm
 #from cart.cart import Cart

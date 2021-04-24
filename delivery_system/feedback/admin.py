@@ -10,4 +10,4 @@ class ProdFeedbackModelAdmin(admin.ModelAdmin):
 
 @admin.register(OrderFeedback)
 class OrderFeedbackModelAdmin(admin.ModelAdmin):
-	list_display = ['id', 'description']
+	list_display = ['id', 'order', 'rating']

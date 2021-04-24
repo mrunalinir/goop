@@ -32,6 +32,7 @@ My Orders
                 <p> Date: {{ order.created }}</p>
                 <p> Delivery Address: {{ order.address }} </p>
                 <p> Cost: ₹{{ order.get_total }}
+                
         <div class="row mb-5">
                 
 
@@ -47,6 +48,7 @@ My Orders
                                 <th class='product-name'>Status</th>
                                 <th class='product-name'>Expected Delivery</th>
                                 <th class="product-remove">Cancel</th>
+                                <th class="feedback-fill">Review</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -67,6 +69,8 @@ My Orders
                                 <td>{{ prod.deliver_by }}</td>
                                 <td><a href="{% url 'order:cancel-order-item' orderitem_id=prod.id %}"
                                         class="btn btn-primary btn-sm">Cancel Order</a></td>
+                                <td><a href="{% url 'feedback:order_feedback_fill' order_id=order.id %}"
+                                        class="btn btn-primary btn-sm">Review Order</a></td>
                             </tr>
                             {% endwith %}
                             {% endfor %}
