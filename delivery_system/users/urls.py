@@ -22,4 +22,10 @@ urlpatterns = [
     path('retailer-requests/', userviews.retailer_requests, name='retailer-requests'),
     path('retailer-request/<int:user_id>', userviews.retailer_request_check, name='retailer-request-check'),
     path('set-address/', userviews.select_address, name='set-address'),
+    # Make templates
+    path('delete-retailer/<int:user_id>', userviews.delete_retailer, name='delete-retailer'),
+    path('delete-wholesaler/<int:user_id>', userviews.delete_wholesaler, name='delete-wholesaler'),
+    path('retailer-list/', userviews.retailer_list, name='retailer-list'),
+    path('wholesaler-list/', userviews.wholesaler_list, name='wholesaler-list'),
+    path('customer-list/', userviews.customer_list, name='customer-list'),
 ]

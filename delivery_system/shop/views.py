@@ -121,3 +121,10 @@ def user_products(request):
     context = {'products':qs}
     return render(request, 'shop/product/user_products.html', context)
 
+
+def products_by_seller(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    products = Product.objects.filter(seller=user)
+    context = {'user':user, 'products':product}
+    return render(request, 'shop/product/products_by_seller.html', context)
+
