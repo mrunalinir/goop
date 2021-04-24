@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_otp',
+    'django_otp.plugins.otp_totp',
 
     # Custom apps
     'users.apps.UsersConfig',
@@ -60,6 +62,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_otp.middleware.OTPMiddleware',
 ]
 
 ROOT_URLCONF = 'deliver.urls'
@@ -147,9 +150,16 @@ LOGIN_REDIRECT_URL = 'users:profile'
 LOGIN_URL = 'users:login'
 LOGOUT_URL = 'users:logout'
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#EMAIL_USE_TLS = True
+#EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 
+EMAIL_HOST_PASSWORD = 
+#EMAIL_PORT = 587
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = "esdgrievance@gmail.com"
-EMAIL_HOST_PASSWORD = "esd@telwap"
+#EMAIL_USE_SSL = True
 EMAIL_PORT = 587
+
