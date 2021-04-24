@@ -25,18 +25,7 @@ def group_required(group, login_url=None, raise_exception=False):
         return False
     return user_passes_test(check_perms, login_url=login_url)
 
-
-def refresh_order(order):
-    count = 0
-    closed = 0
-    for item in order.items.all():
-        count+=1
-        if item.closed == True:
-            closed+=1
-    if closed==count:
-        order.closed = True
-        order.status = "completed"
-        order.save()    
+   
 
 @login_required
 def cart(request):
@@ -163,8 +152,6 @@ def checkout_cart(request):
 def my_orders(request):
     user = request.user
     orders = Order.objects.filter(user = user, status='ordered')
-    for order in orders:
-        refresh_order(order)
     context = {'orders':orders}
     return render(request, 'order/my-orders.html', context)
 
@@ -172,8 +159,6 @@ def my_orders(request):
 def order_details(request, order_id):
     user = request.user
     order = get_object_or_404(Order, id=order_id)
-    refresh_order(order)
-
     context = {'order':order}
     return render(request, 'order/order-details.html', context)
 
