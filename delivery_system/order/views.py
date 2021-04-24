@@ -230,4 +230,9 @@ def orders_by_seller(request, user_id):
     context = {'user':user, 'items':items}
     return render(request, 'order/orders_by_seller.html', context)
 
-
+@group_required('merchant')
+def seller_orders(request):
+    user = request.user
+    orders = Order.objects.filter(user=user, status='ordered')
+    context = {'orders':order}
+    return render(request, 'order/seller-orders.html', context)
