@@ -12,6 +12,7 @@ urlpatterns = [
     path('users/', include('users.urls', namespace='users')),
     path('order/', include('order.urls', namespace='order')),
     path('coupons/', include('coupons.urls', namespace='coupons')),
+    path('feedback/',include('feedback.urls', namespace='feedback')),
     path('', include('shop.urls', namespace='shop')),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

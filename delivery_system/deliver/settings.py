@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'coupons.apps.CouponsConfig',
     'order.apps.OrderConfig',
     'shop.apps.ShopConfig',
+    'feedback.apps.FeedbackConfig',
 
     # Third Party apps
     'crispy_forms',

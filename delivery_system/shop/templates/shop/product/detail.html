@@ -36,7 +36,9 @@
             <p>Category: {% for cat in product.category.all %} <strong>{{ cat }}</strong> {% endfor %}</p>
             <p>Available Units: {{ product.stock_units }}</p>
             <div class="mt-5 col-md-5">
-              <a href = "{% url 'order:add-to-cart' product_id=product.id %}"><button class="buy-now btn btn-sm btn-primary">Add to cart</button></a>
+              <p><a href = "{% url 'order:add-to-cart' product_id=product.id %}"><button class="buy-now btn btn-sm btn-primary">Add to cart</button></a></p>
+              <p><a href = "{% url 'feedback:prod_feedback_fill' product_id=product.id %}"><button class="buy-now btn btn-sm btn-primary">Rate the Product</button></a></p>
+              <p><a href = "{% url 'feedback:prod_feedback_list' product_id=product.id %}"><button class="buy-now btn btn-sm btn-primary">View All Reviews</button></a></p>
             </div>
 
           </div>
