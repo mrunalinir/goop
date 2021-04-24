@@ -27,7 +27,7 @@ def product_list(request, category_id=None):
     context = {'categories': categories, 'products': products}
     if category_id:
         category = Category.objects.get(id=category_id)
-        products = Product.objects.filter(category=category)
+        products = Product.objects.filter(category=category, available=True, sort='retail')
         context = {'category':category, 'categories': categories, 'products': products}
     return render(request, 'shop/product/list.html', context)
 
@@ -37,9 +37,9 @@ def wholesale_product_list(request, category_id=None):
     context = {'categories': categories, 'products': products}
     if category_id:
         category = Category.objects.get(id=category_id)
-        products = Product.objects.filter(category=category)
+        products = Product.objects.filter(category=category, available=True, sort='wholesale')
         context = {'category':category, 'categories': categories, 'products': products}
-    return render(request, 'shop/product/list.html', context)
+    return render(request, 'shop/product/wholesale_list.html', context)
 
 
 
@@ -63,7 +63,7 @@ def category_create(request):
 
 @group_required('merchant')
 def product_create(request):
-    if request.user.location==None or request.user.location==Null:
+    if request.user.location==None:
         return redirect('users:set-address')
     form = CreateProductForm(request.POST or None, request.FILES or None)
     if form.is_valid():
@@ -86,7 +86,7 @@ def product_create(request):
         for cat in cats:
             instance.category.add(cat.id)
         instance.save()
-        return redirect('shop:create-product')
+        return redirect('shop:product_list')
     context={'form':form}
     return render(request, 'shop/product/create_product.html', context)
 
@@ -117,14 +117,28 @@ def product_delete(request, product_id):
 @group_required('merchant')
 def user_products(request):
     user = request.user
-    qs = Product.objects.filter(seller=user)
-    context = {'products':qs}
+    products = Product.objects.filter(seller=user)
+    context = {'products': products}
     return render(request, 'shop/product/user_products.html', context)
 
 
 def products_by_seller(request, user_id):
     user = get_object_or_404(User, id=user_id)
     products = Product.objects.filter(seller=user)
-    context = {'user':user, 'products':product}
+    context = {'user':user, 'products':products}
     return render(request, 'shop/product/products_by_seller.html', context)
 
+def search_products(request):
+    if request.method == 'GET':
+        query= request.GET.get('q')
+        submitbutton= request.GET.get('submit')
+        if query is not None:
+            lookups= Q(name__icontains=query)
+            results= Product.objects.filter(lookups).distinct()
+            context={'results': results,
+                     'submitbutton': submitbutton}
+            return render(request, 'shop/product/product_search.html', context)
+        else:
+            return render(request, 'shop/product/product_search.html')
+    else:
+        return render(request, 'shop/product/product_search.html')

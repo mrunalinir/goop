@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="en">
+{% block title %}
+Search
+{% endblock %}
+{% block content %}
+{% if submitbutton == 'Search' and request.GET.q != '' %}
+    {% if results %}
+        <h1>Results for <b>{{ request.GET.q }}</b></h1>
+            <br/><br/>
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Cost</th>
+                    <th scope="col">Stock</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">About</th>
+                    <th scope="col">Details</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for product in results %}
+                <tr>
+                    <th scope="row">{{product.id}}</th>
+                    <td>{{ product.name }}</td>
+                    <td>₹{{ product.price }}</td>
+                    <td>{{product.stock_units}}</td>
+                    <td>{% for cat in product.category.all %} {{ cat }}, {% endfor %}</td>
+                    <td>{{product.sort}}</td>
+                    <td>{{ product.description }}</td>
+                    <td><a href = "{% url 'shop:product_detail' product_id=product.id %}">Details</a></td>
+                </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+{% else %}
+No search results for this query
+{% endif %}
+{% endif %}
+</html>
+{% endblock %}

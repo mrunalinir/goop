@@ -14,7 +14,7 @@ class OrderItem(models.Model):
     address = models.CharField(max_length=511, blank=True, null=True)
     closed = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
-
+    seller = models.EmailField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.quantity} of {self.item.name}"
@@ -22,8 +22,6 @@ class OrderItem(models.Model):
     def total_cost(self):
         return self.quantity * self.item.price
 
-    def seller(self):
-        return self.item.seller
 
 
 class Order(models.Model):

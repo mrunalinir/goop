@@ -10,7 +10,9 @@ from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 from django.contrib.auth.models import Group
 from .forms import CartEditForm, CartCheckoutForm
-
+from feedback.models import OrderFeedback
+from django.core.mail import BadHeaderError, send_mail
+from deliver.settings import EMAIL_HOST_USER
 
 def group_required(group, login_url=None, raise_exception=False):
     def check_perms(user):
@@ -42,10 +44,12 @@ def cart(request):
 @login_required
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
+    seller = product.seller
     order_item, created = OrderItem.objects.get_or_create(
         item=product,
         user=request.user,
-        status="carted"
+        status="carted",
+        seller = seller.email
     )
     order_qs = Order.objects.filter(user=request.user, status='carted')
     if order_qs.exists():
@@ -141,6 +145,13 @@ def checkout_cart(request):
                 item.address = order.address
                 item.item.stock_units -= item.quantity
                 item.save()
+
+                #Send email for feedback          
+                subject = 'Please provide feedback'
+                message = 'Thank you for ordering '+item.item.name+'. Please provide your feedback about your experience with us. '
+                recepient = user.email
+                send_mail(subject, 
+            message, EMAIL_HOST_USER, [recepient], fail_silently=False)
                 return redirect("shop:product_list")
         context = {'order':order}
         return render(request, 'order/checkout_cart.html', context)
@@ -201,23 +212,30 @@ def update_status(request, orderitem_id):
     context = {'item':item}
     return render(request, 'order/update_status.html', context)
 
-@group_required('merchant')
+# @group_required('merchant')
 def orders_by_user(request, user_id):
     user = get_object_or_404(User, id=user_id)
     orders = Order.objects.filter(user=user, status='ordered')
-    context = {'user':user, 'orders':order}
+    context = {'user':user, 'orders':orders}
     return render(request, 'order/orders_by_user.html', context)
 
-@group_required('wholesaler')
+# @group_required('wholesaler')
 def orders_by_seller(request, user_id):
     user = get_object_or_404(User, id=user_id)
-    items = OrderItem.objects.filter(seller=user, status__in=['ordered', 'in_transit', 'delivered', 'cancelled'])
+    items = OrderItem.objects.filter(seller=user.email, status__in=['ordered', 'in_transit', 'delivered', 'cancelled'])
     context = {'user':user, 'items':items}
     return render(request, 'order/orders_by_seller.html', context)
 
-@group_required('merchant')
+# @group_required('merchant')
 def seller_orders(request):
     user = request.user
-    orders = Order.objects.filter(user=user, status='ordered')
-    context = {'orders':order}
+    items = OrderItem.objects.filter(seller=user.email, status__in=['ordered', 'in_transit', 'delivered', 'cancelled'])
+    context = {'items':items}
     return render(request, 'order/seller-orders.html', context)
+
+# @group_required('merchant')
+def orderitem_details(request, orderitem_id):
+    item = get_object_or_404(OrderItem, id=orderitem_id)
+    feedback = OrderFeedback.objects.filter(order=item)
+    context = {'item':item, 'feedback':feedback}
+    return render(request, 'order/orderitem_details.html', context)

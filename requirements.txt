@@ -9,6 +9,7 @@ distlib==0.3.0
 distro==1.4.0
 Django==3.2
 django-crispy-forms==1.11.2
+django-otp==1.0.3
 html5lib==1.0.1
 idna==2.8
 ipaddr==2.2.0

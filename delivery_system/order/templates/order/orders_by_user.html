@@ -42,6 +42,7 @@ Orders by User {{user}}
                                 <th class="product-total">Total</th>
                                 <th class='product-name'>Status</th>
                                 <th class='product-name'>Expected Delivery</th>
+                                <th class='product-name'>View Details</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -60,6 +61,8 @@ Orders by User {{user}}
                                 <td>₹{{ prod.total_cost }}</td>
                                 <td>{{ prod.status }}</td>
                                 <td>{{ prod.deliver_by }}</td>
+                                <td><a href="{% url 'order:orderitem-details' orderitem_id=prod.id %}"
+                                        class="btn btn-primary btn-sm">View Details</a></td>
                             </tr>
                             {% endwith %}
                             {% endfor %}

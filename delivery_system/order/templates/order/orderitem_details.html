@@ -24,13 +24,12 @@ Update Item
 
     <div class="site-section">
       <div class="container">
-        <div class="row">
-          <p> Details for Order Item: {{item.item.name}} </p>
+          <p> Details for Order Item: {{item.item}} </p>
                 <p> Status: {{ item.status }}</p>
                 <p> Mode: {{ item.mode }}</p>
                 <p> Date: {{ item.created }}</p>
                 <p> Delivery Address: {{ item.address }} </p>
-                <p> Cost: ₹{{ item.total_cost }}</p>
+                <p> Cost: ₹{{ item.total_cost }}
                 <p> Ordered By: {{item.user}}</p>
                 <p> Contact details: {{item.user.phone}}</p>
                 {% with product=item.item %}
@@ -50,26 +49,17 @@ Update Item
                         <p>Quantity: {{ item.quantity }}
 
                       </div>
-                      <form method="post">
-                        {% csrf_token %}
-                        <p>Enter the status of the product</p>
-                            <select name="status">
-                                <option value="in_transit" name = "status">In Transit - The Order has been accepted and will be delivered soon</option>
-                                <option value="delivered" name = "status">Delivered - The Order has been delivered</option>
-                                <option value="cancelled" name = "status">Cancelled - The Order has been cancelled</option>
-                            </select>                        
-                        <p>Enter any message you would like conveyed to the user</p>
-                            <input type="text" name="comments">
-                        <p>Enter the preferred date for delivery if any</p>
-                            <input value="deliver_by" type="datetime-local">
-                         <input type="submit" value="Update Order" class="btn btn-success">
-                      </form>
 
-                      </div>
                     </div>
                   </div>
                 </div>
                {% endwith %}
+
+               {% if feedback %}
+               <p>Here is some feedback about the order</p>
+               <p>Rating: {{feedback.rating}}/5</p>
+               <p>Description: {{feedback.description}}</p>
+               {% endif %}
             <a href="{% url 'shop:product_list' %}"
                                         class="btn btn-primary btn-sm">Home</a>
         </div>

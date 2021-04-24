@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from shop.models import Product
 from order.models import OrderItem
+from users.models import User
 
 # Create your models here.
 class ProductFeedback(models.Model):
@@ -29,6 +30,7 @@ class ProductFeedback(models.Model):
 
 class OrderFeedback(models.Model):
 	order = models.ForeignKey(OrderItem, related_name='feedback_orders', on_delete=models.CASCADE)
+	user = models.ForeignKey(User,on_delete=models.CASCADE, blank=True, null=True)
 	rating = models.PositiveIntegerField(default=5)
 	description = models.TextField(blank=True)
 	created = models.DateTimeField(auto_now_add=True)

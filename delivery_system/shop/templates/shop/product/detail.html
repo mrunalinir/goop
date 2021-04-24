@@ -35,6 +35,7 @@
             <p>Sold by {{product.seller }} at {{ product.location }}</p>
             <p>Category: {% for cat in product.category.all %} <strong>{{ cat }}</strong> {% endfor %}</p>
             <p>Available Units: {{ product.stock_units }}</p>
+            <p>Product Type: {{product.sort}}</p>
             <div class="mt-5 col-md-5">
               <p><a href = "{% url 'order:add-to-cart' product_id=product.id %}"><button class="buy-now btn btn-sm btn-primary">Add to cart</button></a></p>
               <p><a href = "{% url 'feedback:prod_feedback_fill' product_id=product.id %}"><button class="buy-now btn btn-sm btn-primary">Rate the Product</button></a></p>
@@ -46,8 +47,8 @@
           {% if request.user == product.seller  %}
           <div class="col-md-6">
             <span class = "mx-2 mb-0"><strong class = "text-black">Product Owner Actions</strong></span> 
-            <p><button class="buy-now btn btn-sm btn-primary" href = "{% url 'shop:update-product' product_id=product.id %}">Update Product </button></p>
-            <p><button class="buy-now btn btn-sm btn-primary" href = "{% url 'shop:delete-product' product_id=product.id %}">Update Product </button></p>
+            <p><a  href = "{% url 'shop:update-product' product_id=product.id %}"><button class="buy-now btn btn-sm btn-primary">Update Product </button></a></p>
+            <p><a  href = "{% url 'shop:delete-product' product_id=product.id %}"><button class="buy-now btn btn-sm btn-primary">Delete Product </button></a></p>
           </div>
           {% endif %}
 

@@ -30,6 +30,7 @@ Seller Orders for {{user}}
                                 <th class="product-total">Total</th>
                                 <th class='product-name'>Status</th>
                                 <th class='product-name'>Expected Delivery</th>
+                                <th class='product-name'>View Details</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -56,7 +57,6 @@ Seller Orders for {{user}}
                         </tbody>
                     </table>
                 </div>
-                {% endfor %}
         </div>
         <a href="{% url 'shop:product_list' %}"
                                         class="btn btn-primary btn-sm">Home</a>

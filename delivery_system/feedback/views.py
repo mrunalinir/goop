@@ -17,7 +17,7 @@ def product_feedback_create(request, product_id):
 		if form.is_valid():
 			#feedback = form.save()
 			ProductFeedback.objects.create(product= product, rating = form['rating'].value(), description = form['description'].value())
-			return render(request, 'feedback/feedfilled.html', {})
+			return redirect("order:my-orders")
 	else:
 		form = ProdFeedbackCreateForm()
 	return render(request, 'feedback/prodfeedfill.html', {'form': form})
@@ -28,8 +28,8 @@ def order_feedback_create(request, order_id):
 		form = OrderFeedbackCreateForm(request.POST)
 		if form.is_valid():
 			#feedback = form.save()
-			OrderFeedback.objects.create(order= order, rating = form['rating'].value(), description = form['description'].value())
-			return render(request, 'feedback/feedfilled.html', {})
+			OrderFeedback.objects.create(order= order, rating = form['rating'].value(), description = form['description'].value(), user=request.user)
+			return redirect("order:my-orders")
 	else:
 		form = OrderFeedbackCreateForm()
 	return render(request, 'feedback/orderfeedfill.html', {'form': form})

@@ -2,7 +2,7 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% block title %}
-Products by Seller {{user}}
+Products by Seller
 {% endblock %}
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -13,9 +13,10 @@ Products by Seller {{user}}
     <tr>
       <th scope="col">ID</th>
       <th scope="col">Name</th>
-      <th scope="col">Cost</th>
+      <th scope="col">Price</th>
       <th scope="col">Category</th>
       <th scope="col">Details</th>
+      <th scope='col'>View</th>
     </tr>
   </thead>
   <tbody>
@@ -26,7 +27,7 @@ Products by Seller {{user}}
       <td>₹{{ product.price }}</td>
       <td>{% for cat in product.category.all %} {{ cat }}, {% endfor %}</td>
       <td>{{ product.description }}</td>
-      <td><a href = "{% url 'shop:product_detail' product_id=product.id %}">Details</a></td>
+      <td><a href = "{% url 'shop:product_detail' product_id=product.id %}">View</a></td>
     </tr>
    
     {% endfor %}

@@ -2,7 +2,7 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% block title %}
-Seller Orders
+Seller Orders for {{user}}
 {% endblock %}
 {% block content %}
 
@@ -11,20 +11,12 @@ Seller Orders
     <div class="container">
         <div class="row">
             <div class="col-md-12 mb-0"><a href="{% url 'shop:product_list' %}">Home</a> <span class="mx-2 mb-0">/</span> <strong
-                    class="text-black">Seller Orders</strong></div>
+                    class="text-black">Seller Orders  for {{user}}</strong></div>
         </div>
     </div>
 </div>
 
-<div class="container">
-<p> Hello {{ request.user.full_name }}! 
-{% if request.user.location %} Your current location is set to {{ request.user.location }}. If you would like to change that, click <a href="{% url 'users:set-address' %}">here</a>.
-{% else %} You currently do not have a location set. This would lead to issues while ordering a product. You can set your location by selecting from your addresses <a href="{% url 'users:set-address' %}">here</a>.
-{% endif %}</p>
-</div>
-<div class="site-section">
-    <div class="container">
-        <div class="row mb-5">
+
                 <div class="site-blocks-table">
                     <table class="table table-bordered">
                         <thead>
@@ -37,6 +29,7 @@ Seller Orders
                                 <th class='product-name'>Status</th>
                                 <th class='product-name'>Expected Delivery</th>
                                 <th class="product-remove">Update Status</th>
+                                <th class = 'product-name'>View Details</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -57,6 +50,8 @@ Seller Orders
                                 <td>{{ prod.deliver_by }}</td>
                                 <td><a href="{% url 'order:update-status' orderitem_id=prod.id %}"
                                         class="btn btn-primary btn-sm">Update Status</a></td>
+                                <td><a href="{% url 'order:orderitem-details' orderitem_id=prod.id %}"
+                                        class="btn btn-primary btn-sm">View Details</a></td>
                             </tr>
                             {% endwith %}
                             {% endfor %}
@@ -64,11 +59,11 @@ Seller Orders
 
                         </tbody>
                     </table>
-                </div>
-                {% endfor %}
-        </div>
+
         <a href="{% url 'shop:product_list' %}"
                                         class="btn btn-primary btn-sm">Home</a>
-    </div>
+
 </div>
 {% endblock %}
+
+

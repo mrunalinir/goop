@@ -12,12 +12,12 @@ class CreateProductForm(forms.ModelForm):
 	class Meta:
 		model = Product
 		fields = [
-		'category', 'name', 'image', 'description', 'price', 'original_price', 'available', 'stock_units', 'location'
+		'category', 'name', 'image', 'description', 'price', 'original_price', 'available', 'stock_units'
 		]
 
 class UpdateProductForm(forms.ModelForm):
 	class Meta:
 		model = Product
 		fields = [
-		'category', 'name', 'image', 'description', 'price', 'original_price', 'available', 'stock_units', 'location'	
+		'category', 'name', 'image', 'description', 'price', 'original_price', 'available', 'stock_units', 
 		]

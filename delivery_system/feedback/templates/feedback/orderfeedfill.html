@@ -6,7 +6,7 @@ Feedback
 {% block content %}
 <div class="container">
     <h1 class="text-center">Order Feedback</h1>
-    <form action="." method="post" class="order-form">
+    <form method="post" class="order-form">
         {{ form|crispy }}
         <p><input class="btn btn-primary btn-sm btn-block" type="submit" value="Submit"></p>
         {% csrf_token %}

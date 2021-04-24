@@ -6,6 +6,7 @@ class ProdFeedbackCreateForm(forms.ModelForm):
 	class Meta:
 		model = ProductFeedback
 		fields = ['rating', 'description']
+
 class OrderFeedbackCreateForm(forms.ModelForm):
     class Meta:
         model = OrderFeedback

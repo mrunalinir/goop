@@ -22,19 +22,17 @@ My Orders
 {% else %} You currently do not have a location set. This would lead to issues while ordering a product. You can set your location by selecting from your addresses <a href="{% url 'users:set-address' %}">here</a>.
 {% endif %}</p>
 </div>
-<div class="site-section">
-    <div class="container">
         {% for order in orders %}
                 <hr>
-                <p> Order Details for order ID: <a href ="{% url 'order:order-details' order_id=order.id%}">{{ order.id }}</a>. Use this ID for further tracking </p>
+                <p> Order Details for order ID: {{ order.id }}</p>
                 <p> Status: {{ order.status }}</p>
                 <p> Mode: {{ order.mode }}</p>
                 <p> Date: {{ order.created }}</p>
                 <p> Delivery Address: {{ order.address }} </p>
-                <p> Cost: ₹{{ order.get_total }}
+                <p> Cost: ₹{{ order.get_total }}</p>
+                <p> <strong>Click <a href ="{% url 'order:order-details' order_id=order.id%}">here</a> for further tracking</strong></p>
                 
-        <div class="row mb-5">
-                
+
 
                 <div class="site-blocks-table">
                     <table class="table table-bordered">
@@ -44,11 +42,13 @@ My Orders
                                 <th class="product-name">Product</th>
                                 <th class="product-price">Price</th>
                                 <th class="product-quantity">Quantity</th>
-                                <th class="product-total">Total</th>
+                                <th class="product-quantity">Total Cost</th>
                                 <th class='product-name'>Status</th>
                                 <th class='product-name'>Expected Delivery</th>
+                                <th class='product-name'>View Details</th>
                                 <th class="product-remove">Cancel</th>
                                 <th class="feedback-fill">Review</th>
+                                <th class="feedback-fill">Service Feedback</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -67,10 +67,14 @@ My Orders
                                 <td>₹{{ prod.total_cost }}</td>
                                 <td>{{ prod.status }}</td>
                                 <td>{{ prod.deliver_by }}</td>
+                                <td><a href="{% url 'order:orderitem-details' orderitem_id=prod.id %}"
+                                        class="btn btn-primary btn-sm">View Details</a></td>
                                 <td><a href="{% url 'order:cancel-order-item' orderitem_id=prod.id %}"
                                         class="btn btn-primary btn-sm">Cancel Order</a></td>
-                                <td><a href="{% url 'feedback:order_feedback_fill' order_id=order.id %}"
-                                        class="btn btn-primary btn-sm">Review Order</a></td>
+                                <td><a href="{% url 'feedback:prod_feedback_fill' product_id=p.id %}"
+                                        class="btn btn-primary btn-sm">Review Product</a></td>
+                                <td><a href="{% url 'feedback:order_feedback_fill' order_id=prod.id %}"
+                                        class="btn btn-primary btn-sm">Service Feedback</a></td>
                             </tr>
                             {% endwith %}
                             {% endfor %}
@@ -82,7 +86,5 @@ My Orders
                 {% endfor %}
             <a href="{% url 'shop:product_list' %}"
                                         class="btn btn-primary btn-sm">Home</a>
-        </div>
-    </div>
-</div>
+
 {% endblock %}

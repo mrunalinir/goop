@@ -25,7 +25,7 @@ Remove Retailer
                   {{ a }} <br>
                   {% endfor %}
                 </p>
-                <a href="{% url 'orders:orders-by-seller' user_id=user.id %}">Orders taken as seller</a><br>
+                <a href="{% url 'order:orders-by-seller' user_id=user.id %}">Orders taken as seller</a><br>
                 <a href="{% url 'shop:products-by-seller' user_id=user.id %}">Products hosted</a><br>
             </div> 
         </div>

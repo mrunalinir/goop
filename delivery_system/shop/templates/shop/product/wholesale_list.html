@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% load static %}
+{% load mytags %}
+{% block title %}
+{% if category %}{{ category.name }}{% else %}Products{% endif %}
+{% endblock %}
+{% block content %}
+<div class="bg-light py-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 mb-0"><a href="{% url 'shop:product_list' %}">Home</a> <span class="mx-2 mb-0">/</span> <strong
+                    class="text-black">Wholesale</strong></div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+<p> Hello {{ request.user.full_name }}! 
+{% if request.user.location %} Your current location is set to {{ request.user.location }}. If you would like to change that, click <a href="{% url 'users:set-address' %}">here</a>.
+{% else %} You currently do not have a location set. This would lead to issues while ordering a product. You can set your location by selecting from your addresses <a href="{% url 'users:set-address' %}">here</a>.
+{% endif %}</p>
+   
+</div>
+
+
+<div class="site-section">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-md-9 order-2">
+                <div class="row mb-5">
+                    {% for product in products %}
+                    <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
+                        <div class="block-4 text-center border">
+                            <figure class="block-4-image">
+                                <a href="{{ product.get_absolute_url }}"><img src="{{ product.image.url }}" 
+                                        alt="Image placeholder" class="img-fluid" style="height: 10vw;"></a>
+                            </figure>
+                            <div class="block-4-text p-4">
+                                <h3><a href="{% url 'shop:product_detail' product_id=product.id %}">{{ product.name }}</a></h3>
+                                <p class="mb-0">{{ product.description }}</p>
+                                <p class="text-primary font-weight-bold">₹{{ product.price }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="row" data-aos="fade-up">
+                    <div class="col-md-12 text-center">
+                        <div class="site-block-27">
+                            <ul>
+                                <li><a href="#">&lt;</a></li>
+                                <li class="active"><span>1</span></li>
+                                <li><a href="#">2</a></li>
+                                <li><a href="#">3</a></li>
+                                <li><a href="#">4</a></li>
+                                <li><a href="#">5</a></li>
+                                <li><a href="#">&gt;</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 order-1 mb-5 mb-md-0">
+                {% if request.user|group:"merchant" %}
+                        <p><a href="{% url 'shop:user-products'%}"><button class="buy-now btn btn-sm btn-primary" >My Products</button></a></p>
+                        <p><a href="{% url 'shop:create-product' %}"><button class="buy-now btn btn-sm btn-primary" >Create Product</button></a></p>
+                    {% endif %}
+                <div class="border p-4 rounded mb-4">
+                    {% if request.user|group:"merchant"  %}
+                        <p><a href= "{% url 'shop:create-category' %}"><button class="buy-now btn btn-sm btn-primary">Create Category</button></a></p>
+                    {% endif %}
+
+                    <h3 class="mb-3 h6 text-uppercase text-black d-block">Categories</h3>
+                    <ul class="list-unstyled mb-0">
+                        <li {% if not category %} class="mb-1" {% endif %}>
+                            <a href="{% url "shop:wholesale_product_list" %}" class="d-flex"><span>All</a>
+                        </li>
+                        {% for c in categories %}
+                        <li {% if category == c %} class="mb-1" {% endif %}>
+                            <a href="{% url 'shop:wholesale_list_by_category' category_id=c.id %}" class="d-flex">{{ c.name }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

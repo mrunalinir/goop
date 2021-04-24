@@ -32,11 +32,20 @@
                                 </li>
                                 
                                 {% if request.user.is_authenticated %}
+
+                                <li>
+                                     <form action="{% url 'shop:searchproduct' %}" method="GET" value="{{request.GET.q}}"> 
+                                       Search <input type="text" name="q" value="{{request.GET.q}}" placeholder="Search posts"/>
+                                      <input type="submit" name="submit" value="Search"/>
+                                      </form>
+                                </li>
                                 <li>
                                     <a href = "{% url 'users:logout' %}">
                                     <span class="glyphicon glyphicon-log-out">Log out</span> 
                                     </a>
                                 </li>
+
+
                                 {% else %}
                                 <li>
                                     <a href = "{% url 'users:login' %}">
@@ -60,7 +69,10 @@
                     <li><a href="{% url "shop:product_list" %}">Shop</a></li>
                     {% if request.user|group:"merchant" %}
                     <li><a href="{% url 'shop:wholesale_product_list' %}">Wholesale</a></li>
+                    {% elif request.user.is_superuser %}
+                    <li><a href="{% url 'shop:wholesale_product_list' %}">Wholesale</a></li>
                     {% endif %}
+
                 </ul>
             </div>
         </nav>
