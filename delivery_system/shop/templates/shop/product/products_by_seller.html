@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}
+Products by Seller {{user}}
+{% endblock %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+{% block content %}
+<p> All products hosted by {{user}}</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Name</th>
+      <th scope="col">Cost</th>
+      <th scope="col">Category</th>
+      <th scope="col">Details</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for product in products %}
+    <tr>
+      <th scope="row">{{product.id}}</th>
+      <td>{{ product.name }}</td>
+      <td>₹{{ product.price }}</td>
+      <td>{% for cat in product.category.all %} {{ cat }}, {% endfor %}</td>
+      <td>{{ product.description }}</td>
+      <td><a href = "{% url 'shop:product_detail' product_id=product.id %}">Details</a></td>
+    </tr>
+   
+    {% endfor %}
+  </tbody>
+</table>
+
+
+{% endblock %}
+</html>

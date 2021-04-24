@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}
+List of wholesalers
+{% endblock %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+{% block content %}
+<p> All registered wholesalers</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Email ID</th>
+      <th scope="col">Name</th>
+      <th scope="col">Phone Number</th>
+      <th scope="col">Products Hosted</th>
+      <th scope="col">Orders Placed</th>
+      <th scope="col">Orders Received</th>
+      <th scope="col">Remove as wholesaler</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for user in users %}
+    <tr>
+      <td>{{user.email}}</td>
+      <td>{{ user.full_name }}</td>
+      <td>₹{{ user.phone }}</td>
+      <td><a href="{% url 'shop:products-by-seller' user_id=user.id %}">Products Hosted</a></td>
+      <td><a href="{% url 'order:orders-by-user' user_id=user.id %}">Orders Placed</a></td>
+      <td><a href="{% url 'order:orders-by-seller' user_id=user.id %}">Orders Received</a></td>
+      <td><a href="{% url 'users:delete-wholesaler' user_id=user.id %}">Remove as Wholesaler</a></td>
+    </tr>
+   
+    {% endfor %}
+  </tbody>
+</table>
+
+
+{% endblock %}
+</html>

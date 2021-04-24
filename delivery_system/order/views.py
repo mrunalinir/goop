@@ -25,18 +25,7 @@ def group_required(group, login_url=None, raise_exception=False):
         return False
     return user_passes_test(check_perms, login_url=login_url)
 
-
-def refresh_order(order):
-    count = 0
-    closed = 0
-    for item in order.items.all():
-        count+=1
-        if item.closed == True:
-            closed+=1
-    if closed==count:
-        order.closed = True
-        order.status = "completed"
-        order.save()    
+   
 
 @login_required
 def cart(request):
@@ -163,8 +152,6 @@ def checkout_cart(request):
 def my_orders(request):
     user = request.user
     orders = Order.objects.filter(user = user, status='ordered')
-    for order in orders:
-        refresh_order(order)
     context = {'orders':orders}
     return render(request, 'order/my-orders.html', context)
 
@@ -172,8 +159,6 @@ def my_orders(request):
 def order_details(request, order_id):
     user = request.user
     order = get_object_or_404(Order, id=order_id)
-    refresh_order(order)
-
     context = {'order':order}
     return render(request, 'order/order-details.html', context)
 
@@ -187,18 +172,14 @@ def cancel_order_item(request, orderitem_id):
             if request.POST.get("comments"):
                 item.comments = request.POST.get("comments")
             item.save()
+            item.item.stock_units+=item.quantity
+            item.item.save()
         else:
             messages.info(request, "You cannot cancel an order that is closed")
         return redirect("order:my-orders")
     context = {'item':item}
     return render(request, 'order/cancel-order-item.html', context)
 
-@group_required('merchant')
-def seller_orders(request):
-    user = request.user
-    items = OrderItem.objects.filter(seller=user)
-    context = {'items':items}
-    return render(request, 'order/seller-orders.html', context)
 
 @group_required('merchant')
 def update_status(request, orderitem_id):
@@ -209,6 +190,9 @@ def update_status(request, orderitem_id):
             item.deliver_by = request.POST.get('deliver_by')
         if item.status == 'delivered' or item.status == 'cancelled':
             item.closed = True
+        if item.status == 'cancelled':
+            item.item.stock_units += item.quantity
+            item.item.save()
         if request.POST.get('comments'):
             item.comments = request.POST.get("comments")
         item.save()
@@ -217,4 +201,23 @@ def update_status(request, orderitem_id):
     context = {'item':item}
     return render(request, 'order/update_status.html', context)
 
+@group_required('merchant')
+def orders_by_user(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    orders = Order.objects.filter(user=user, status='ordered')
+    context = {'user':user, 'orders':order}
+    return render(request, 'order/orders_by_user.html', context)
 
+@group_required('wholesaler')
+def orders_by_seller(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    items = OrderItem.objects.filter(seller=user, status__in=['ordered', 'in_transit', 'delivered', 'cancelled'])
+    context = {'user':user, 'items':items}
+    return render(request, 'order/orders_by_seller.html', context)
+
+@group_required('merchant')
+def seller_orders(request):
+    user = request.user
+    orders = Order.objects.filter(user=user, status='ordered')
+    context = {'orders':order}
+    return render(request, 'order/seller-orders.html', context)

@@ -40,6 +40,19 @@ My Profile
                           {% if request.user|group:"merchant" %}
                           <li class = "list-group-item">  <a href = "{% url 'order:seller-orders' %}"><button class="btn btn-outline-primary">Seller Orders</button></a> </li>
                           {% endif%}
+
+                          {% if request.user|group:"merchant" %}
+                          <li class = "list-group-item">  <a href = "{% url 'users:customer-list' %}"><button class="btn btn-outline-primary">Customer List</button></a> </li>
+                          {% endif%}
+
+                          {% if request.user|group:"wholesaler" %}
+                          <li class = "list-group-item">  <a href = "{% url 'users:retailer-list' %}"><button class="btn btn-outline-primary">Retailer List</button></a> </li>
+                          {% endif%}
+
+                          {% if request.user.is_superuser %}
+                          <li class = "list-group-item">  <a href = "{% url 'users:wholesaler-list' %}"><button class="btn btn-outline-primary">Wholesaler List</button></a> </li>
+                          {% endif%}
+
                       </ul>
                     </div>
                   </div>

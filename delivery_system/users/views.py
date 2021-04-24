@@ -236,3 +236,50 @@ def select_address(request):
         return redirect('shop:product_list')
     context = {'addresses':addresses}
     return render(request, 'select_address.html', context)
+
+def delete_wholesaler(request, user_id):
+    user = User.objects.get(id=user_id)
+    if request.POST and request.user.is_superuser:
+        group = Group.objects.get(name='wholesaler') 
+        group.user_set.remove(user)
+        group = Group.objects.get(name='merchant') 
+        group.user_set.remove(user)
+        group = Group.objects.get(name='customer') 
+        group.user_set.add(user)
+        return redirect('users:wholesaler-list')
+
+    context = {'user':user}
+    return render(request, 'delete_wholesaler.html', context)
+
+@group_required('wholesaler')
+def delete_retailer(request, user_id):
+    user = User.objects.get(id=user_id)
+    if request.POST:
+        group = Group.objects.get(name='retailer') 
+        group.user_set.remove(user)
+        group = Group.objects.get(name='merchant') 
+        group.user_set.remove(user)
+        group = Group.objects.get(name='customer') 
+        group.user_set.add(user)
+        return redirect('users:retailer-list')
+
+    context = {'user':user}
+    return render(request, 'delete_retailer.html', context)
+
+@group_required('wholesaler')
+def retailer_list(request):
+    users = User.objects.filter(groups__name='retailer')
+    context = {'users': users}
+    return render(request, 'retailer_list.html', context)
+
+def wholesaler_list(request):
+    users = User.objects.filter(groups__name='wholesaler')
+    context = {'users': users}
+    return render(request, 'wholesaler_list.html', context)
+
+@group_required('merchant')
+def customer_list(request):
+    users = User.objects.filter(groups__name='customer')
+    context = {'users': users}
+    return render(request, 'customer_list.html', context)
+    
