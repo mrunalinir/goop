@@ -4,6 +4,7 @@ from django.contrib.auth.forms import ReadOnlyPasswordHashField, AuthenticationF
 from .models import User, Address
 from django.conf import settings
 from django.core.mail import send_mail
+import random
 
 #The form that will be rendered and viewed by the website users
 class RegistrationForm(forms.ModelForm):
@@ -321,7 +322,9 @@ class OTPAuthenticationForm(AuthenticationForm):
             del self.request.session['_otp']
         else:
             # There is no OTP so create one and send it by email
-            otp = "1234"
+            # otp = "1234"
+            otp=str(random.randint(100000, 999999))
+            print(otp)
             send_mail(
                 subject="Your OTP Password",
                 message="Your OTP password is %s" % otp,

@@ -21,6 +21,7 @@ Search
                     <th scope="col">Category</th>
                     <th scope="col">Type</th>
                     <th scope="col">About</th>
+                    <th scope="col">Address</th>
                     <th scope="col">Details</th>
                   </tr>
                 </thead>
@@ -34,6 +35,7 @@ Search
                     <td>{% for cat in product.category.all %} {{ cat }}, {% endfor %}</td>
                     <td>{{product.sort}}</td>
                     <td>{{ product.description }}</td>
+                    <td>{{product.location}}</td>
                     <td><a href = "{% url 'shop:product_detail' product_id=product.id %}">Details</a></td>
                 </tr>
                   {% endfor %}

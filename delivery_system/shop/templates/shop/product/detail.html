@@ -32,7 +32,7 @@
             <h2 class="text-black mr-2">{{ product.name }}</h2>
             <p><strong class="text-primary h4">₹{{ product.price }}</strong></p>
             <p>{{ product.description|linebreaks }}</p>
-            <p>Sold by {{product.seller }} at {{ product.location }}</p>
+            <p>Sold by {{product.seller.full_name }} at {{ product.location }}. You can contact them at {{product.seller.phone}}</p>
             <p>Category: {% for cat in product.category.all %} <strong>{{ cat }}</strong> {% endfor %}</p>
             <p>Available Units: {{ product.stock_units }}</p>
             <p>Product Type: {{product.sort}}</p>
